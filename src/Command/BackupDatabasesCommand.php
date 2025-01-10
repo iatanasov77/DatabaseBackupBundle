@@ -140,8 +140,11 @@ final class BackupDatabasesCommand extends Command
                 $filePath = "$backupDirectory/$backupName-$database-$date.sql";
 
                 $process = Process::fromShellCommandline(
-                    '"${:MYSQL_DUMP}" -u "${:DB_USER}" -h "${:DB_HOST}" -P "${:DB_PORT}" "${:DB_NAME}" "${:DB_TABLES}" > "${:FILEPATH}"'
-                    );
+                    \sprintf(
+                        '"${:MYSQL_DUMP}" -u "${:DB_USER}" -h "${:DB_HOST}" -P "${:DB_PORT}" "${:DB_NAME}" %s > "${:FILEPATH}"',
+                        \implode(' ', $backupTables)
+                    )
+                );
                 
                 $process->setPty(Process::isPtySupported());
                 $process->run(null, [
@@ -150,18 +153,9 @@ final class BackupDatabasesCommand extends Command
                     'DB_HOST' => $connection->getHost(),
                     'DB_PORT' => $connection->getPort(),
                     'DB_NAME' => $database,
-                    'DB_TABLES' => \implode(' ', $backupTables),
                     'MYSQL_PWD' => $connection->getPassword(),
                     'FILEPATH' => $filePath,
                 ]);
-                
-                /*
-                $process = Process::fromShellCommandline($shellCommand . ' > "${:FILEPATH}"');
-                $shellCommandPlaceholders['FILEPATH'] = $filePath;
-
-                $process->setPty(Process::isPtySupported());
-                $process->run(null, $shellCommandPlaceholders);
-                */
                 
                 if (!$process->isSuccessful()) {
                     $message = '' !== $process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput();
