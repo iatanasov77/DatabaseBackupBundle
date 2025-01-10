@@ -150,7 +150,7 @@ final class BackupDatabasesCommand extends Command
                     'DB_HOST' => $connection->getHost(),
                     'DB_PORT' => $connection->getPort(),
                     'DB_NAME' => $database,
-                    'DB_TABLES' => \implode('" "', $backupTables),
+                    'DB_TABLES' => \implode(' ', $backupTables),
                     'MYSQL_PWD' => $connection->getPassword(),
                     'FILEPATH' => $filePath,
                 ]);
