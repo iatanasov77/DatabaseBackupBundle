@@ -10,6 +10,7 @@ class Strategy
         private readonly ?int $maxFiles = null,
         private readonly ?string $backupDirectory = null,
         private readonly ?string $dateFormat = 'Y-m-d',
+        private readonly ?array $onlyData = false,
         private readonly ?array $tables = []
     ) {
     }
@@ -27,6 +28,11 @@ class Strategy
     public function getDateFormat(): ?string
     {
         return $this->dateFormat;
+    }
+    
+    public function getOnlyData(): ?bool
+    {
+        return $this->onlyData;
     }
     
     public function getTables(): ?array

@@ -113,21 +113,8 @@ final class BackupDatabasesCommand extends Command
                 throw new RuntimeException('Unable to get the current directory, check the user permissions')
             ;
             
+            $dumpOnlyData = $backup->getStrategy()->getOnlyData();
             $backupTables = $backup->getStrategy()->getTables();
-            /*
-            $shellCommand = '"${:MYSQL_DUMP}" -u "${:DB_USER}" -h "${:DB_HOST}" -P "${:DB_PORT}" "${:DB_NAME} "${:DB_TABLES}" > "${:FILEPATH}"';
-            $shellCommandPlaceholders = [
-                'MYSQL_DUMP' => $mysqldump,
-                'DB_USER' => $connection->getUser(),
-                'DB_HOST' => $connection->getHost(),
-                'DB_PORT' => $connection->getPort(),
-                'DB_NAME' => $database,
-                'MYSQL_PWD' => $connection->getPassword(),
-            ];
-            */
-            foreach ( $backupTables as $dbTable ) {
-                
-            }
             
             $io->info(sprintf('The backup %s is in progress', $backupName));
             
@@ -141,7 +128,8 @@ final class BackupDatabasesCommand extends Command
 
                 $process = Process::fromShellCommandline(
                     \sprintf(
-                        '"${:MYSQL_DUMP}" -u "${:DB_USER}" -h "${:DB_HOST}" -P "${:DB_PORT}" "${:DB_NAME}" %s > "${:FILEPATH}"',
+                        '"${:MYSQL_DUMP}" -u "${:DB_USER}" -h "${:DB_HOST}" -P "${:DB_PORT}" %s "${:DB_NAME}" %s > "${:FILEPATH}"',
+                        $dumpOnlyData ? '--no-create-info' : '',
                         \implode(' ', $backupTables)
                     )
                 );
