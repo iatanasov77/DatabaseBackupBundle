@@ -114,7 +114,20 @@ final class BackupDatabasesCommand extends Command
             ;
             
             $backupTables = $backup->getStrategy()->getTables();
-            //var_dump( \implode( ' ', $backupTables ) );  return Command::SUCCESS;
+            /*
+            $shellCommand = '"${:MYSQL_DUMP}" -u "${:DB_USER}" -h "${:DB_HOST}" -P "${:DB_PORT}" "${:DB_NAME} "${:DB_TABLES}" > "${:FILEPATH}"';
+            $shellCommandPlaceholders = [
+                'MYSQL_DUMP' => $mysqldump,
+                'DB_USER' => $connection->getUser(),
+                'DB_HOST' => $connection->getHost(),
+                'DB_PORT' => $connection->getPort(),
+                'DB_NAME' => $database,
+                'MYSQL_PWD' => $connection->getPassword(),
+            ];
+            */
+            foreach ( $backupTables as $dbTable ) {
+                
+            }
             
             $io->info(sprintf('The backup %s is in progress', $backupName));
             
@@ -127,10 +140,9 @@ final class BackupDatabasesCommand extends Command
                 $filePath = "$backupDirectory/$backupName-$database-$date.sql";
 
                 $process = Process::fromShellCommandline(
-                    '"${:MYSQL_DUMP}" -u "${:DB_USER}" -h "${:DB_HOST}" -P "${:DB_PORT}" "${:DB_NAME} "${:DB_NAME}" ${:DB_TABLES} > "${:FILEPATH}"'
-                );
-                //var_dump( $process->getCommandLine() ); return Command::SUCCESS;
-
+                    '"${:MYSQL_DUMP}" -u "${:DB_USER}" -h "${:DB_HOST}" -P "${:DB_PORT}" "${:DB_NAME}" "${:DB_TABLES}" > "${:FILEPATH}"'
+                    );
+                
                 $process->setPty(Process::isPtySupported());
                 $process->run(null, [
                     'MYSQL_DUMP' => $mysqldump,
@@ -138,11 +150,19 @@ final class BackupDatabasesCommand extends Command
                     'DB_HOST' => $connection->getHost(),
                     'DB_PORT' => $connection->getPort(),
                     'DB_NAME' => $database,
-                    'DB_TABLES' => \implode( ' ', $backupTables ),
+                    'DB_TABLES' => \implode('', $backupTables),
                     'MYSQL_PWD' => $connection->getPassword(),
                     'FILEPATH' => $filePath,
                 ]);
+                
+                /*
+                $process = Process::fromShellCommandline($shellCommand . ' > "${:FILEPATH}"');
+                $shellCommandPlaceholders['FILEPATH'] = $filePath;
 
+                $process->setPty(Process::isPtySupported());
+                $process->run(null, $shellCommandPlaceholders);
+                */
+                
                 if (!$process->isSuccessful()) {
                     $message = '' !== $process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput();
 
