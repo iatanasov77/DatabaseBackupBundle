@@ -10,7 +10,7 @@ class Strategy
         private readonly ?int $maxFiles = null,
         private readonly ?string $backupDirectory = null,
         private readonly ?string $dateFormat = 'Y-m-d',
-        private readonly ?array $onlyData = false,
+        private readonly ?bool $onlyData = false,
         private readonly ?array $tables = []
     ) {
     }
