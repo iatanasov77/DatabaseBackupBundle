@@ -128,6 +128,7 @@ final class BackupDatabasesCommand extends Command
                 $process = Process::fromShellCommandline(
                     '"${:MYSQL_DUMP}" -u "${:DB_USER}" -h "${:DB_HOST}" -P "${:DB_PORT}" "${:DB_NAME} "${:DB_NAME}" "${:DB_TABLES}" > "${:FILEPATH}"'
                 );
+                var_dump( $process->getCommandLine() ); return Command::SUCCESS;
 
                 $process->setPty(Process::isPtySupported());
                 $process->run(null, [
