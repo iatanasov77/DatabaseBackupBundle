@@ -114,7 +114,10 @@ final class BackupDatabasesCommand extends Command
             ;
 
             $io->info(sprintf('The backup %s is in progress', $backupName));
-
+            
+            var_dump( $backup->getStrategy()->getTables() );
+            return Command::SUCCESS;
+            
             foreach ($connection->getDatabases() as $database) {
                 if ($output->isVerbose()) {
                     $io->comment("Backup for $database database has started");

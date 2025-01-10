@@ -9,7 +9,8 @@ class Strategy
     public function __construct(
         private readonly ?int $maxFiles = null,
         private readonly ?string $backupDirectory = null,
-        private readonly ?string $dateFormat = 'Y-m-d'
+        private readonly ?string $dateFormat = 'Y-m-d',
+        private readonly ?array $tables = []
     ) {
     }
 
@@ -26,5 +27,10 @@ class Strategy
     public function getDateFormat(): ?string
     {
         return $this->dateFormat;
+    }
+    
+    public function getTables(): ?array
+    {
+        return $this->tables;
     }
 }
