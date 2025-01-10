@@ -140,7 +140,7 @@ final class BackupDatabasesCommand extends Command
                 $filePath = "$backupDirectory/$backupName-$database-$date.sql";
 
                 $process = Process::fromShellCommandline(
-                    '"${:MYSQL_DUMP}" -u "${:DB_USER}" -h "${:DB_HOST}" -P "${:DB_PORT}" "${:DB_NAME}" ${:DB_TABLES} > "${:FILEPATH}"'
+                    '"${:MYSQL_DUMP}" -u "${:DB_USER}" -h "${:DB_HOST}" -P "${:DB_PORT}" "${:DB_NAME}" "${:DB_TABLES}" > "${:FILEPATH}"'
                     );
                 
                 $process->setPty(Process::isPtySupported());
@@ -150,7 +150,7 @@ final class BackupDatabasesCommand extends Command
                     'DB_HOST' => $connection->getHost(),
                     'DB_PORT' => $connection->getPort(),
                     'DB_NAME' => $database,
-                    'DB_TABLES' => \implode(' ', $backupTables),
+                    'DB_TABLES' => \implode('" "', $backupTables),
                     'MYSQL_PWD' => $connection->getPassword(),
                     'FILEPATH' => $filePath,
                 ]);
