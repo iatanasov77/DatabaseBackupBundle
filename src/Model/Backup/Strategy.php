@@ -11,7 +11,7 @@ class Strategy
         private readonly ?string $backupDirectory = null,
         private readonly ?string $dateFormat = 'Y-m-d',
         private readonly ?bool $onlyData = false,
-        private readonly ?array $tables = []
+        private readonly ?array $tables = null
     ) {
     }
 
