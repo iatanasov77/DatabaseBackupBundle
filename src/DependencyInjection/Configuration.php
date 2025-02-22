@@ -56,7 +56,7 @@ final class Configuration implements ConfigurationInterface
                                     ->scalarNode('backup_directory')->isRequired()->defaultNull()->end()
                                     ->scalarNode('date_format')->defaultValue('Y-m-d')->end()
                                     ->booleanNode('only_data')->defaultFalse()->end()
-                                    ->arrayNode('tables')->scalarPrototype()->end()->end()
+                                    ->arrayNode('tables')->scalarPrototype()->end()->defaultValue([])->end()
                                 ->end()
                             ->end()
                         ->end()
