@@ -6,6 +6,15 @@ namespace Symandy\DatabaseBackupBundle\Model\Backup;
 
 class Strategy
 {
+    /**
+     * Default Constructor
+     * 
+     * @param int $maxFiles
+     * @param string $backupDirectory
+     * @param string $dateFormat
+     * @param bool $onlyData
+     * @param array<string> $tables
+     */
     public function __construct(
         private readonly ?int $maxFiles = null,
         private readonly ?string $backupDirectory = null,
@@ -35,6 +44,7 @@ class Strategy
         return $this->onlyData;
     }
     
+    /** @return array<string> */
     public function getTables(): ?array
     {
         return $this->tables;
