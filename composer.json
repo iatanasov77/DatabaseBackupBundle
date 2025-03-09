@@ -42,7 +42,7 @@
         "friendsofphp/php-cs-fixer": "^3.16"
     },
     "scripts": {
-        "cs-fixer": "vendor/bin/php-cs-fixer fix --dry-run",
+        "cs-fixer": "vendor/bin/php-cs-fixer fix --dry-run --diff",
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/phpunit"
     }
